@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_macros.html" import inquiry_fields, field_error with context %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <div class="contact-layout">
+    <div>
+      <h1>Contactez-nous</h1>
+      <p class="lead">Un devis, un conseil, une question sur la garantie ? Écrivez-nous, un conseiller vous répond sous un jour ouvré.</p>
+      <ul class="info-list">
+        <li><strong>Adresse</strong><br>Avenue Cheikh Anta Diop, Dakar</li>
+        <li><strong>E-mail</strong><br>contact@techsahel.example</li>
+        <li><strong>Téléphone</strong><br>+221 33 000 00 00</li>
+        <li><strong>Horaires</strong><br>Lun – ven : 8h30 – 18h00 · Sam : 9h00 – 14h00</li>
+      </ul>
+    </div>
+    <section class="form-card" aria-labelledby="contact-titre">
+      <h2 id="contact-titre">Envoyer un message</h2>
+      <form method="post" action="{{ url_for('web.contact') }}" novalidate>
+        {{ inquiry_fields(form, errors, csrf_token) }}
+        <div class="field">
+          <label for="message">Votre message *</label>
+          <textarea id="message" name="message" rows="6" required minlength="10" maxlength="2000"
+            {% if errors.get('message') %}aria-invalid="true" aria-describedby="err-message"{% endif %}>{{ form.get('message', '') }}</textarea>
+          {{ field_error(errors, 'message') }}
+        </div>
+        <button class="btn" type="submit">Envoyer</button>
+      </form>
+    </section>
+  </div>
+</section>
+{% endblock %}

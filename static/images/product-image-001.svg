@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="Ordinateur portable ultrafin">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f1f8"/><stop offset="1" stop-color="#c5d9ea"/></linearGradient></defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<ellipse cx="240" cy="318" rx="150" ry="12" fill="#0b1f33" opacity=".12"/>
+<rect x="110.0" y="95" width="260" height="170" rx="10" fill="#14293f"/>
+<rect x="120.0" y="105" width="240" height="150" rx="4" fill="#f2a007" opacity=".9"/>
+<rect x="120.0" y="105" width="240" height="150" rx="4" fill="url(#g)" opacity=".25"/>
+<path d="M80.0 270 H400.0 L384.0 292 H96.0 Z" fill="#3b5873"/>
+<rect x="215" y="274" width="50" height="5" rx="2.5" fill="#dbe6ef" opacity=".7"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="SSD externe 1 To">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f1f8"/><stop offset="1" stop-color="#c5d9ea"/></linearGradient></defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<ellipse cx="240" cy="318" rx="150" ry="12" fill="#0b1f33" opacity=".12"/>
+<rect x="150" y="105" width="180" height="150" rx="20" fill="#14293f" transform="rotate(-6 240 180)"/>
+<rect x="170" y="125" width="140" height="14" rx="7" fill="#f2a007" transform="rotate(-6 240 180)"/>
+<rect x="170" y="150" width="90" height="8" rx="4" fill="#3b5873" transform="rotate(-6 240 180)"/>
+<text x="240" y="218" font-family="sans-serif" font-size="30" font-weight="700" fill="#dbe6ef" text-anchor="middle" transform="rotate(-6 240 180)">1 TB</text>
+</svg>

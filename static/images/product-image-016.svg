@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="Casque USB">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6eee3"/><stop offset="1" stop-color="#ecd5b0"/></linearGradient></defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<ellipse cx="240" cy="318" rx="150" ry="12" fill="#0b1f33" opacity=".12"/>
+<path d="M150 210 V170 a90 90 0 0 1 180 0 V210" fill="none" stroke="#14293f" stroke-width="16" stroke-linecap="round"/>
+<rect x="128" y="190" width="40" height="76" rx="16" fill="#3b5873"/>
+<rect x="312" y="190" width="40" height="76" rx="16" fill="#3b5873"/>
+<path d="M148 266 q-6 36 60 34" fill="none" stroke="#14293f" stroke-width="6" stroke-linecap="round"/>
+<circle cx="214" cy="300" r="9" fill="#f2a007"/>
+</svg>

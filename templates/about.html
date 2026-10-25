@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}À propos{% endblock %}
+{% block content %}
+<section class="container narrow page-section">
+  <h1>À propos de TechSahel</h1>
+  <p class="lead">Fondée à Dakar, TechSahel Solutions équipe les entreprises, les écoles et les particuliers en matériel informatique et réseau fiable, avec un accompagnement de proximité.</p>
+  <h2>Notre métier</h2>
+  <p>Nous sélectionnons des ordinateurs, des équipements réseau, des écrans et des accessoires adaptés aux réalités locales : coupures d'électricité, climat, budgets des PME. Chaque produit est testé et garanti.</p>
+  <h2>Nos clients</h2>
+  <p>Cabinets, commerces, établissements scolaires, hôtels, administrations et indépendants nous font confiance pour s'équiper et faire évoluer leur infrastructure.</p>
+  <h2>Comment ça marche</h2>
+  <p>Ce site est un catalogue : parcourez les produits, puis envoyez une demande de devis. Notre équipe vous répond, confirme la disponibilité et organise la livraison ou le retrait à Dakar. Aucun paiement n'est effectué en ligne.</p>
+  <p><a class="btn" href="{{ url_for('web.contact') }}">Nous contacter</a></p>
+</section>
+{% endblock %}

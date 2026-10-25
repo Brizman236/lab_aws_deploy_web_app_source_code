@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card, STOCK_LABELS with context %}
+{% block title %}Catalogue{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <h1>Catalogue</h1>
+  <form class="filters" action="{{ url_for('web.catalog') }}" method="get" role="search">
+    <div class="field field-grow">
+      <label for="q">Recherche</label>
+      <input id="q" name="q" type="search" maxlength="100" value="{{ filters.q }}" placeholder="Nom, marque, description…">
+    </div>
+    <div class="field">
+      <label for="category">Catégorie</label>
+      <select id="category" name="category">
+        <option value="">Toutes</option>
+        {% for c in categories %}<option value="{{ c.slug }}" {{ 'selected' if filters.category == c.slug }}>{{ c.name }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="availability">Disponibilité</label>
+      <select id="availability" name="availability">
+        <option value="">Toutes</option>
+        {% for key, (label, _tone) in STOCK_LABELS.items() %}<option value="{{ key }}" {{ 'selected' if filters.availability == key }}>{{ label }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="field field-small">
+      <label for="min_price">Prix min (FCFA)</label>
+      <input id="min_price" name="min_price" type="number" min="0" step="1000" value="{{ filters.min_price if filters.min_price is not none }}">
+    </div>
+    <div class="field field-small">
+      <label for="max_price">Prix max (FCFA)</label>
+      <input id="max_price" name="max_price" type="number" min="0" step="1000" value="{{ filters.max_price if filters.max_price is not none }}">
+    </div>
+    <div class="field">
+      <label for="sort">Trier par</label>
+      <select id="sort" name="sort">
+        <option value="name" {{ 'selected' if filters.sort == 'name' }}>Nom</option>
+        <option value="price_asc" {{ 'selected' if filters.sort == 'price_asc' }}>Prix croissant</option>
+        <option value="price_desc" {{ 'selected' if filters.sort == 'price_desc' }}>Prix décroissant</option>
+        <option value="newest" {{ 'selected' if filters.sort == 'newest' }}>Plus récents</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn" type="submit">Filtrer</button>
+      <a class="btn btn-outline" href="{{ url_for('web.catalog') }}">Réinitialiser</a>
+    </div>
+  </form>
+
+  <p class="result-count" role="status">{{ total }} produit{{ 's' if total > 1 }} trouvé{{ 's' if total > 1 }}</p>
+
+  {% if products %}
+  <div class="grid grid-4">{% for p in products %}{{ product_card(p) }}{% endfor %}</div>
+  {% else %}
+  <div class="empty">
+    <h2>Aucun produit ne correspond à votre recherche</h2>
+    <p>Essayez d'autres mots-clés ou retirez certains filtres. Vous ne trouvez pas ce que vous cherchez ? <a href="{{ url_for('web.contact') }}">Contactez-nous</a>.</p>
+  </div>
+  {% endif %}
+
+  {% if pages > 1 %}
+  <nav class="pagination" aria-label="Pagination">
+    {% set base = {'q': filters.q, 'category': filters.category, 'availability': filters.availability, 'sort': filters.sort, 'min_price': filters.min_price, 'max_price': filters.max_price} %}
+    {% if filters.page > 1 %}<a class="btn btn-outline btn-small" href="{{ url_for('web.catalog', page=filters.page - 1, **base) }}">← Précédent</a>{% endif %}
+    <span>Page {{ filters.page }} sur {{ pages }}</span>
+    {% if filters.page < pages %}<a class="btn btn-outline btn-small" href="{{ url_for('web.catalog', page=filters.page + 1, **base) }}">Suivant →</a>{% endif %}
+  </nav>
+  {% endif %}
+</section>
+{% endblock %}

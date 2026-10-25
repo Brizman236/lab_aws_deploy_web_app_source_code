@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card with context %}
+{% block title %}Matériel informatique et réseau à Dakar{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <p class="eyebrow eyebrow-light">Dakar · Sénégal</p>
+      <h1>Le bon équipement informatique pour votre activité</h1>
+      <p class="lead lead-light">Ordinateurs, réseau, écrans et accessoires sélectionnés pour les PME, les écoles et les professionnels. Consultez le catalogue et demandez votre devis en quelques clics.</p>
+      <p class="hero-actions">
+        <a class="btn btn-accent" href="{{ url_for('web.catalog') }}">Parcourir le catalogue</a>
+        <a class="btn btn-ghost" href="{{ url_for('web.contact') }}">Demander un devis</a>
+      </p>
+    </div>
+    <form class="hero-search" action="{{ url_for('web.catalog') }}" method="get" role="search">
+      <label for="home-q">Rechercher un produit</label>
+      <div class="search-row">
+        <input id="home-q" name="q" type="search" maxlength="100" placeholder="Routeur, écran 27 pouces, SSD…">
+        <button class="btn btn-accent" type="submit">Rechercher</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="container page-section">
+  <h2>Nos catégories</h2>
+  <div class="grid grid-4">
+    {% for c in categories %}
+    <a class="card category-card" href="{{ url_for('web.catalog', category=c.slug) }}">
+      <h3>{{ c.name }}</h3>
+      <p>{{ c.description }}</p>
+      <span class="link-more">{{ c.product_count }} produit{{ 's' if c.product_count != 1 }} →</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container page-section">
+  <div class="section-head">
+    <h2>Nouveautés disponibles</h2>
+    <a href="{{ url_for('web.catalog', sort='newest') }}">Tout voir →</a>
+  </div>
+  <div class="grid grid-4">
+    {% for p in featured %}{{ product_card(p) }}{% endfor %}
+  </div>
+</section>
+
+<section class="band">
+  <div class="container grid grid-3">
+    <div><h3>Conseil sur mesure</h3><p>Nos techniciens vous aident à choisir le matériel adapté à votre usage et à votre budget.</p></div>
+    <div><h3>Installation et réseau</h3><p>Câblage, Wi-Fi, switchs et protection électrique : nous équipons bureaux, écoles et hôtels.</p></div>
+    <div><h3>Garantie et suivi</h3><p>Matériel garanti, service après-vente et assistance à distance ou sur site.</p></div>
+  </div>
+</section>
+{% endblock %}

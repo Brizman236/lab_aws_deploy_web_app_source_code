@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="Souris ergonomique">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f1f6"/><stop offset="1" stop-color="#d4d6e6"/></linearGradient></defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<ellipse cx="240" cy="318" rx="150" ry="12" fill="#0b1f33" opacity=".12"/>
+<path d="M240 90 C300 90 320 150 320 210 C320 265 285 295 240 295 C195 295 160 265 160 210 C160 150 180 90 240 90 Z" fill="#14293f"/>
+<path d="M240 90 V170" stroke="#3b5873" stroke-width="4"/>
+<rect x="228" y="130" width="24" height="34" rx="12" fill="#f2a007"/>
+</svg>

@@ -1,0 +1,90 @@
+-- Données de démonstration (100 % fictives : entreprise, marques, clients).
+-- Rejouable : vide les tables puis les repeuple. NE PAS exécuter sur une base de production.
+
+TRUNCATE inquiries, products, categories RESTART IDENTITY CASCADE;
+
+INSERT INTO categories (name, slug, description) VALUES
+ ('Ordinateurs',            'ordinateurs',   'Ordinateurs portables et de bureau pour le travail, les études et la création.'),
+ ('Équipements réseau',     'reseau',        'Routeurs, switchs, points d''accès et onduleurs pour bureaux et petites entreprises.'),
+ ('Écrans',                 'ecrans',        'Moniteurs bureautiques, professionnels et de création.'),
+ ('Accessoires et stockage','accessoires',   'Claviers, souris, casques, disques et supports de stockage.');
+
+-- price_xof : prix en francs CFA (XOF), entier.
+INSERT INTO products (category_id, name, slug, brand, description, price_xof, stock_status, image_key) VALUES
+ (1, 'Nexora Slim 14 - Portable bureautique', 'nexora-slim-14', 'Nexora',
+  'Ultraportable 14 pouces, Core i5, 16 Go de RAM, SSD 512 Go. Léger (1,3 kg) avec jusqu''à 10 h d''autonomie, idéal pour les professionnels nomades.',
+  485000, 'in_stock', 'product-image-001.svg'),
+ (1, 'Nexora Pro 16 - Portable performance', 'nexora-pro-16', 'Nexora',
+  'Portable 16 pouces, Core i7, 32 Go de RAM, SSD 1 To, carte graphique dédiée. Conçu pour la conception, le montage et les logiciels exigeants.',
+  895000, 'low_stock', 'product-image-002.svg'),
+ (1, 'Kaldera Tour PC de bureau compact', 'kaldera-tour-compact', 'Kaldera',
+  'PC de bureau compact, Core i5, 16 Go de RAM, SSD 512 Go, Wi-Fi 6. Silencieux et économe en énergie, parfait pour l''accueil et la comptabilité.',
+  365000, 'in_stock', 'product-image-003.svg'),
+ (1, 'Kaldera Studio Station de travail', 'kaldera-studio-station', 'Kaldera',
+  'Station de travail tour, Ryzen 9, 64 Go de RAM, SSD 2 To, GPU professionnel. Pour la 3D, l''architecture et le calcul intensif.',
+  1450000, 'on_order', 'product-image-004.svg'),
+
+ (2, 'Teranga Net Routeur Wi-Fi 6 AX3000', 'teranga-routeur-ax3000', 'Teranga Net',
+  'Routeur Wi-Fi 6 double bande, 4 ports Gigabit, couverture jusqu''à 150 m². Gestion du contrôle parental et réseau invité.',
+  78000, 'in_stock', 'product-image-005.svg'),
+ (2, 'Teranga Net Switch 24 ports Gigabit', 'teranga-switch-24', 'Teranga Net',
+  'Switch administrable 24 ports Gigabit + 2 SFP, VLAN et QoS. Format rack 19 pouces pour baie réseau de PME.',
+  185000, 'in_stock', 'product-image-006.svg'),
+ (2, 'Teranga Net Point d''accès plafonnier AX1800', 'teranga-ap-plafond', 'Teranga Net',
+  'Point d''accès Wi-Fi 6 à encastrer, alimentation PoE, gestion centralisée. Pour bureaux, hôtels et salles de classe.',
+  95000, 'low_stock', 'product-image-007.svg'),
+ (2, 'Baobab Power Onduleur 1000 VA', 'baobab-onduleur-1000va', 'Baobab Power',
+  'Onduleur line-interactive 1000 VA avec régulation de tension (AVR) et 6 prises. Protège ordinateurs et équipements réseau des coupures et surtensions.',
+  89000, 'in_stock', 'product-image-008.svg'),
+
+ (3, 'Lumio Office 24" Full HD', 'lumio-office-24', 'Lumio',
+  'Moniteur 24 pouces IPS Full HD 75 Hz, bords fins, HDMI et VGA. L''écran bureautique fiable au meilleur prix.',
+  98000, 'in_stock', 'product-image-009.svg'),
+ (3, 'Lumio Pro 27" QHD', 'lumio-pro-27-qhd', 'Lumio',
+  'Moniteur 27 pouces IPS QHD 2560x1440, pied réglable en hauteur, USB-C avec charge 65 W. Réduit les câbles sur le bureau.',
+  215000, 'in_stock', 'product-image-010.svg'),
+ (3, 'Lumio Creator 32" 4K', 'lumio-creator-32-4k', 'Lumio',
+  'Moniteur 32 pouces 4K, 99 % sRGB, calibré en usine. Pour la retouche photo, la vidéo et la conception graphique.',
+  420000, 'low_stock', 'product-image-011.svg'),
+ (3, 'Lumio Wide 34" Ultrawide', 'lumio-wide-34', 'Lumio',
+  'Moniteur incurvé 34 pouces ultrawide 21:9, 100 Hz. Remplace deux écrans pour les tableurs et le multitâche.',
+  310000, 'out_of_stock', 'product-image-012.svg'),
+
+ (4, 'Vantix Clavier sans fil AZERTY', 'vantix-clavier-azerty', 'Vantix',
+  'Clavier sans fil silencieux, disposition AZERTY française, autonomie de 18 mois, pavé numérique complet.',
+  18500, 'in_stock', 'product-image-013.svg'),
+ (4, 'Vantix Souris ergonomique Bluetooth', 'vantix-souris-ergo', 'Vantix',
+  'Souris verticale ergonomique Bluetooth et récepteur USB, capteur 4000 DPI. Réduit la fatigue du poignet.',
+  24000, 'in_stock', 'product-image-014.svg'),
+ (4, 'Vantix SSD externe 1 To USB-C', 'vantix-ssd-externe-1to', 'Vantix',
+  'SSD portable 1 To, lecture jusqu''à 1000 Mo/s, boîtier résistant aux chocs. Sauvegardes et transferts rapides.',
+  72000, 'in_stock', 'product-image-015.svg'),
+ (4, 'Vantix Casque USB avec micro antibruit', 'vantix-casque-usb', 'Vantix',
+  'Casque USB avec microphone antibruit, coussinets confortables, commandes intégrées. Pour les visioconférences et le télétravail.',
+  34500, 'low_stock', 'product-image-016.svg');
+
+INSERT INTO inquiries (customer_name, customer_email, customer_phone, product_id, message, status, created_at) VALUES
+ ('Awa Diallo',      'awa.diallo@example.com',      '+221 77 000 00 01', 1,
+  'Bonjour, pouvez-vous me confirmer la disponibilité de 5 unités pour notre cabinet ? Quel serait le délai de livraison à Dakar ?',
+  'new', now() - interval '2 days'),
+ ('Moussa Ndiaye',   'moussa.ndiaye@example.com',   NULL,                 6,
+  'Nous équipons de nouveaux bureaux à Thiès. Proposez-vous l''installation et la configuration du switch ?',
+  'in_progress', now() - interval '5 days'),
+ ('Fatou Sow',       'fatou.sow@example.com',       '+221 78 000 00 02', 11,
+  'Je cherche un écran pour la retouche photo. Pouvez-vous me conseiller entre ce modèle et le 27 pouces QHD ?',
+  'closed', now() - interval '12 days'),
+ ('Cheikh Ba',       'cheikh.ba@example.com',       NULL,                 12,
+  'Quand cet écran sera-t-il de nouveau en stock ? Je peux attendre quelques semaines.',
+  'new', now() - interval '1 day'),
+ ('Mariama Faye',    'mariama.faye@example.com',    '+221 76 000 00 03', NULL,
+  'Bonjour, faites-vous des devis pour équiper une école de 20 postes avec réseau Wi-Fi ? Merci de me contacter.',
+  'in_progress', now() - interval '3 days'),
+ ('Ibrahima Sarr',   'ibrahima.sarr@example.com',   NULL,                 NULL,
+  'Proposez-vous une garantie et un service après-vente sur place à Saint-Louis ?',
+  'closed', now() - interval '20 days'),
+ ('Aminata Gueye',   'aminata.gueye@example.com',   '+221 70 000 00 04', 8,
+  'Cet onduleur suffit-il pour protéger un PC de bureau et un routeur pendant les coupures de courant ?',
+  'new', now() - interval '6 hours'),
+ ('Ousmane Diop',    'ousmane.diop@example.com',    NULL,                 4,
+  'Je souhaite un devis pour deux stations de travail. Est-il possible d''obtenir une facture proforma ?',
+  'new', now() - interval '4 hours');

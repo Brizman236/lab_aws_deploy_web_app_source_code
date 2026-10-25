@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card, stock_badge, inquiry_fields, field_error with context %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block description %}{{ product.description[:150] }}{% endblock %}
+{% block content %}
+<section class="container page-section">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ url_for('web.catalog') }}">Catalogue</a> ›
+    <a href="{{ url_for('web.catalog', category=product.category_slug) }}">{{ product.category_name }}</a> ›
+    <span>{{ product.name }}</span>
+  </nav>
+
+  <div class="product-layout">
+    <div class="product-media"><img src="{{ image_url(product.image_key) }}" alt="{{ product.name }}" width="480" height="360"></div>
+    <div class="product-info">
+      <p class="card-meta">{{ product.category_name }} · {{ product.brand }}</p>
+      <h1>{{ product.name }}</h1>
+      <p class="price">{{ product.price_xof | xof }}</p>
+      <p>{{ stock_badge(product.stock_status) }}</p>
+      <p class="lead">{{ product.description }}</p>
+      <p class="muted">Prix indicatif TTC, sous réserve de disponibilité. Aucun paiement en ligne : demandez un devis ci-dessous.</p>
+      <p><a class="btn" href="#demande">Demander un devis</a></p>
+    </div>
+  </div>
+
+  <section id="demande" class="form-card" aria-labelledby="demande-titre">
+    <h2 id="demande-titre">Une question sur ce produit ?</h2>
+    <p>Indiquez vos coordonnées : nous vous répondons sous un jour ouvré.</p>
+    <form method="post" action="{{ url_for('web.product_inquiry', slug=product.slug) }}" novalidate>
+      {{ inquiry_fields(form, errors, csrf_token) }}
+      <div class="field">
+        <label for="message">Votre message *</label>
+        <textarea id="message" name="message" rows="5" required minlength="10" maxlength="2000"
+          {% if errors.get('message') %}aria-invalid="true" aria-describedby="err-message"{% endif %}>{{ form.get('message', 'Bonjour, je souhaite un devis pour : ' ~ product.name ~ '.') }}</textarea>
+        {{ field_error(errors, 'message') }}
+      </div>
+      <button class="btn" type="submit">Envoyer ma demande</button>
+    </form>
+  </section>
+
+  {% if related %}
+  <section class="page-section">
+    <h2>Dans la même catégorie</h2>
+    <div class="grid grid-4">{% for p in related %}{{ product_card(p) }}{% endfor %}</div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

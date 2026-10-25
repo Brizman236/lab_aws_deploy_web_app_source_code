@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Demande envoyée{% endblock %}
+{% block content %}
+<section class="container narrow center page-section">
+  <p class="eyebrow">Demande reçue</p>
+  <h1>Merci, votre demande a bien été envoyée</h1>
+  <p class="lead">Un conseiller TechSahel vous répondra par e-mail sous un jour ouvré.</p>
+  <p><a class="btn" href="{{ url_for('web.catalog') }}">Continuer à parcourir le catalogue</a></p>
+</section>
+{% endblock %}

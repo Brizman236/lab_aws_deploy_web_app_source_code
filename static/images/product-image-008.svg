@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="Onduleur 1000 VA">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6efe3"/><stop offset="1" stop-color="#ecd9b4"/></linearGradient></defs>
+<rect width="480" height="360" fill="url(#g)"/>
+<ellipse cx="240" cy="318" rx="150" ry="12" fill="#0b1f33" opacity=".12"/>
+<rect x="150" y="120" width="180" height="170" rx="14" fill="#14293f"/>
+<rect x="172" y="142" width="136" height="36" rx="6" fill="#3b5873"/>
+<rect x="182" y="152" width="70" height="8" rx="4" fill="#4ade80"/>
+<circle cx="185" cy="235" r="11" fill="#dbe6ef" opacity=".85"/><circle cx="217" cy="235" r="11" fill="#dbe6ef" opacity=".85"/><circle cx="249" cy="235" r="11" fill="#dbe6ef" opacity=".85"/><circle cx="281" cy="235" r="11" fill="#dbe6ef" opacity=".85"/>
+<path d="M246 255 l-12 20 h10 l-6 16 l18 -24 h-10 l8 -12 z" fill="#f2a007"/>
+</svg>

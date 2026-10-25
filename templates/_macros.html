@@ -1,0 +1,58 @@
+{% set STOCK_LABELS = {
+  'in_stock': ('En stock', 'ok'),
+  'low_stock': ('Stock limité', 'warn'),
+  'out_of_stock': ('Rupture de stock', 'bad'),
+  'on_order': ('Sur commande', 'info')
+} %}
+
+{% macro stock_badge(status) -%}
+  {% set label, tone = STOCK_LABELS.get(status, (status, 'info')) %}
+  <span class="badge badge-{{ tone }}">{{ label }}</span>
+{%- endmacro %}
+
+{% macro product_card(p) -%}
+<article class="card product-card">
+  <a class="card-media" href="{{ url_for('web.product_detail', slug=p.slug) }}" tabindex="-1" aria-hidden="true">
+    <img src="{{ image_url(p.image_key) }}" alt="" loading="lazy" width="480" height="360">
+  </a>
+  <div class="card-body">
+    <p class="card-meta">{{ p.category_name }} · {{ p.brand }}</p>
+    <h3 class="card-title"><a href="{{ url_for('web.product_detail', slug=p.slug) }}">{{ p.name }}</a></h3>
+    <p class="card-price">{{ p.price_xof | xof }}</p>
+    {{ stock_badge(p.stock_status) }}
+  </div>
+</article>
+{%- endmacro %}
+
+{% macro field_error(errors, name) -%}
+  {% if errors.get(name) %}<p class="field-error" id="err-{{ name }}" role="alert">{{ errors[name] }}</p>{% endif %}
+{%- endmacro %}
+
+{% macro inquiry_fields(form, errors, csrf_token) -%}
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div class="hp" aria-hidden="true">
+    <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+  {% if errors.get('_global') %}<p class="alert alert-error" role="alert">{{ errors['_global'] }}</p>{% endif %}
+
+  <div class="field">
+    <label for="customer_name">Nom complet *</label>
+    <input id="customer_name" name="customer_name" type="text" required maxlength="120" autocomplete="name"
+           value="{{ form.get('customer_name', '') }}" {% if errors.get('customer_name') %}aria-invalid="true" aria-describedby="err-customer_name"{% endif %}>
+    {{ field_error(errors, 'customer_name') }}
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label for="customer_email">Adresse e-mail *</label>
+      <input id="customer_email" name="customer_email" type="email" required maxlength="254" autocomplete="email"
+             value="{{ form.get('customer_email', '') }}" {% if errors.get('customer_email') %}aria-invalid="true" aria-describedby="err-customer_email"{% endif %}>
+      {{ field_error(errors, 'customer_email') }}
+    </div>
+    <div class="field">
+      <label for="customer_phone">Téléphone <span class="optional">(facultatif)</span></label>
+      <input id="customer_phone" name="customer_phone" type="tel" maxlength="30" autocomplete="tel"
+             value="{{ form.get('customer_phone', '') }}" {% if errors.get('customer_phone') %}aria-invalid="true" aria-describedby="err-customer_phone"{% endif %}>
+      {{ field_error(errors, 'customer_phone') }}
+    </div>
+  </div>
+{%- endmacro %}
