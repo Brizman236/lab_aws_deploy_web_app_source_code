@@ -33,7 +33,11 @@ Niveau visé : **raisonnable pour un petit site public** sans authentification. 
 ## Recommandations pour le déploiement
 
 1. **Moindre privilège base de données** : l'application utilise un rôle dédié avec `SELECT` sur `categories`/`products` et `SELECT, INSERT` sur `inquiries` (plus `USAGE` sur ses séquences). Les commandes `init-db` / `seed-db` se lancent avec un autre rôle d'administration, jamais celui du service.
-2. **Secrets** : `DATABASE_URL` et `SECRET_KEY` fournis par l'environnement (ex. Parameter Store `SecureString`), jamais dans le dépôt, une image ou un log.
+2. **Secrets** : en mode `aws`, le mot de passe de la base et la `SECRET_KEY` viennent de **Secrets Manager**, lus avec le rôle IAM de l'instance ; en local, de `.env`. Jamais dans le dépôt, une image ou un log. Les messages d'erreur AWS ne contiennent que la classe d'erreur et son code.
+   - Le mode `aws` **ignore** les variables d'environnement ordinaires : on ne peut pas contourner Parameter Store par accident.
+   - Aucun repli silencieux vers le mode local : une configuration AWS incomplète empêche le démarrage.
+   - Le rôle IAM n'a que `ssm:GetParametersByPath` (chemin de l'application) et `secretsmanager:GetSecretValue` (les deux secrets : base de données et `SECRET_KEY`).
+   - Connexion à la base en `sslmode=require` par défaut dans ce mode.
 3. **Réseau** : base non exposée à Internet, accessible uniquement depuis l'application.
 4. **Exécuter le service avec un utilisateur non privilégié**, jamais en root.
 5. **Gunicorn derrière un reverse proxy / load balancer** ; ne pas exposer le serveur de développement Flask.

@@ -1,10 +1,15 @@
-"""Configuration de l'application, lue exclusivement depuis l'environnement.
+"""Configuration de l'application.
 
-Aucune valeur spécifique à un environnement n'est codée en dur ici. Le seul
-contrat avec l'extérieur est l'ensemble des variables d'environnement listées
-dans `.env.example`. Que ces variables viennent d'un fichier .env, de systemd,
-d'un script de démarrage ou d'AWS Systems Manager Parameter Store (injectées
-au démarrage), le code applicatif ne change pas.
+Aucune valeur spécifique à un environnement n'est codée en dur ici. Deux modes,
+choisis par CONFIG_SOURCE :
+
+  env (défaut, local) : variables d'environnement / fichier .env (voir .env.example).
+  aws                 : Parameter Store + Secrets Manager (voir config_sources.py).
+
+Dans les deux cas `load_config` retourne le même objet `Config` immuable : le reste
+de l'application ignore d'où viennent les valeurs. En mode aws, les variables
+d'environnement ordinaires (APP_ENV, DATABASE_URL, ...) sont IGNORÉES : AWS est la
+seule source, ce qui empêche de contourner Parameter Store par accident.
 """
 from __future__ import annotations
 
@@ -35,17 +40,31 @@ class Config:
     secret_key: str
     items_per_page: int
     trusted_proxy_hops: int
+    config_source: str = "env"
 
     @property
     def is_production(self) -> bool:
         return self.app_env == "production"
 
 
-def load_config(overrides: dict | None = None) -> Config:
-    """Construit la configuration depuis os.environ (+ surcharges pour les tests)."""
+def load_config(overrides: dict | None = None, client_factory=None) -> Config:
+    """Construit la configuration (+ surcharges et clients AWS injectables pour les tests)."""
     env = dict(os.environ)
     if overrides:
         env.update(overrides)
+
+    config_source = env.get("CONFIG_SOURCE", "env").strip().lower()
+    if config_source not in {"env", "aws"}:
+        raise ConfigError("CONFIG_SOURCE doit valoir 'env' ou 'aws'.")
+
+    if config_source == "aws":
+        # Import tardif : le module AWS (et boto3) n'est jamais chargé en mode local.
+        from .config_sources import AwsConfigError, load_aws_values
+
+        try:
+            env = load_aws_values(env, client_factory)
+        except AwsConfigError as exc:
+            raise ConfigError(f"Configuration AWS : {exc}") from exc
 
     app_env = env.get("APP_ENV", "development").strip().lower()
     if app_env not in {"development", "testing", "production"}:
@@ -91,4 +110,5 @@ def load_config(overrides: dict | None = None) -> Config:
         secret_key=secret_key,
         items_per_page=items_per_page,
         trusted_proxy_hops=trusted_proxy_hops,
+        config_source=config_source,
     )

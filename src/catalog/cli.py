@@ -22,7 +22,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     if args.command == "check-config":
-        print(f"APP_ENV={cfg.app_env} APP_NAME={cfg.app_name} LOG_LEVEL={cfg.log_level} "
+        print(f"CONFIG_SOURCE={cfg.config_source} APP_ENV={cfg.app_env} APP_NAME={cfg.app_name} LOG_LEVEL={cfg.log_level} "
               f"STORAGE_BACKEND={cfg.storage_backend} ASSET_BASE_URL={cfg.asset_base_url}")
         print("DATABASE_URL : définie (valeur non affichée)")
         return 0

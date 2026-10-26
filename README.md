@@ -1,6 +1,6 @@
 # TechSahel – Catalogue de produits et demandes clients
 
-Application web monolithique (Flask + PostgreSQL) qui sert de **workload** à un projet de portfolio *Cloud Engineering* : elle est volontairement simple, réaliste, et conçue pour être migrée ensuite vers AWS. **Ce dépôt ne contient aucune infrastructure AWS** : l'infrastructure (réseau, IAM, EC2, RDS, S3, Parameter Store, Terraform, tests de panne) relève d'un projet séparé.
+Application web monolithique (Flask + PostgreSQL) qui sert de **workload** à un projet de portfolio *Cloud Engineering* : elle est volontairement simple, réaliste, et conçue pour être migrée ensuite vers AWS. **Ce dépôt ne contient aucune infrastructure AWS** (seule la lecture de la configuration depuis AWS est prévue côté application, en option) : l'infrastructure (réseau, IAM, EC2, RDS, S3, Parameter Store, Terraform, tests de panne) relève d'un projet séparé.
 
 > TechSahel Solutions est une entreprise **fictive**. Toutes les données (produits, marques, clients, e-mails en `example.com`) sont inventées.
 
@@ -119,10 +119,17 @@ Trois tables, clés étrangères, contraintes `CHECK`, index justifiés. Le diag
 
 ## 11. Gestion de la configuration
 
-Toute la configuration vient de **variables d'environnement** (12-factor) ; rien de spécifique à un environnement n'est dans le code. Voir [.env.example](.env.example) et [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
+Rien de spécifique à un environnement n'est dans le code. Deux modes, choisis par `CONFIG_SOURCE` :
+
+- **`env` (défaut, local)** : variables d'environnement et fichier `.env`.
+- **`aws` (production)** : Parameter Store + Secrets Manager. Les variables ordinaires sont alors ignorées ; seules `CONFIG_SOURCE`, `SSM_PATH_PREFIX`, `DB_SECRET_ID`, `SECRET_KEY_SECRET_ID` et `AWS_REGION` sont lues. Nécessite `pip install -r requirements-aws.txt`.
+
+Voir [.env.example](.env.example) et [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
 
 | Variable | Rôle |
 |---|---|
+| `CONFIG_SOURCE` | `env` (local, défaut) ou `aws` (Parameter Store + Secrets Manager) |
+| `SSM_PATH_PREFIX`, `DB_SECRET_ID`, `SECRET_KEY_SECRET_ID`, `AWS_REGION` | Mode `aws` uniquement : où lire la configuration |
 | `APP_ENV` | `development`, `testing` ou `production` |
 | `APP_NAME` | Nom affiché |
 | `DATABASE_URL` | DSN PostgreSQL (**obligatoire**, secret) |
@@ -154,7 +161,7 @@ EC2
 
 - **Base** : seule `DATABASE_URL` change pour pointer vers RDS.
 - **Images** : `STORAGE_BACKEND=remote` + `ASSET_BASE_URL` pointant vers S3/CloudFront ; la base ne stocke que des clés. L'application **n'utilise pas le SDK AWS**.
-- **Configuration** : variables d'environnement, que l'infrastructure peut alimenter depuis Parameter Store sans toucher au code.
+- **Configuration** : deux modes d'exécution. `CONFIG_SOURCE=env` (local) lit l'environnement / `.env` ; `CONFIG_SOURCE=aws` lit **Parameter Store** (valeurs ordinaires) et **Secrets Manager** (identifiants de la base, `SECRET_KEY`) avec le rôle IAM de l'instance. Le code AWS est isolé dans `config_sources.py` et boto3 (`requirements-aws.txt`) n'est requis qu'en mode `aws`.
 - **Sans état** : aucune session ni fichier local écrit ; plusieurs instances derrière un load balancer fonctionnent (jetons CSRF signés, pas de session serveur).
 - **Exploitation** : `/health` (readiness, 503 si base HS) et `/health/live`, logs sur stdout, `TRUSTED_PROXY_HOPS` pour un load balancer.
 
